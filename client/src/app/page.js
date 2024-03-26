@@ -1,10 +1,18 @@
+"use client";
+import { useSocket } from "@/context/socketProvider";
 import Image from "next/image";
+import { useEffect , useState, useLayoutEffect} from "react";
 
 export default function Home() {
-  return (
-    <>
-    hello
-    
-    </>
-  );
+  const socket = useSocket();
+ 
+  useEffect(() => {
+    const handleConnect = () => {
+      console.log("Client connected");
+      console.log(socket.id);
+    };
+    socket?.on("connect", handleConnect);
+  }, [socket]); 
+
+  return <>hello world</>;
 }
