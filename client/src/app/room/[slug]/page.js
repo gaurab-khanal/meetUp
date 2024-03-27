@@ -9,15 +9,17 @@ import usePlayer from "@/hooks/usePlayer";
 
 
 
-const page = ({ params }) => {
+const page = () => {
   const socket = useSocket();
   const {peer, id} = usePeer();
   const {stream} = useMediaStream();
   const {player, setPlayer} = usePlayer()
 
   useEffect(()=>{
-    const handleUserConnected = (newUser)=>{
-        console.log("user connedted in room ", newUser)
+    const handleUserConnected = (id, name)=>{
+        const newUser = id;
+        console.log("user connedted in room ", id)
+        console.log("user connedted in name ", name)
         if(!stream) return;
         const call = peer?.call(newUser, stream);
 

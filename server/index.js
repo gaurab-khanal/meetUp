@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3001/',
+    origin: 'http://localhost:3000/',
 }));
 
 
@@ -13,17 +13,18 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
     cors: {
-      origin: "http://localhost:3001",
+      origin: "http://localhost:3000",
       methods: ["GET", "POST"]
     }
   });
 
 io.on("connection", (socket)=>{
     console.log("Server connected")
-   socket.on("join-room", ({roomId, id})=>{
+   socket.on("join-room", ({roomId, id, name})=>{
        console.log("User joined room: ", roomId, id)
+       console.log("User name : ", name)
        socket.join(roomId);
-        socket.broadcast.to(roomId).emit("user-connected", id);
+        socket.broadcast.to(roomId).emit("user-connected", id, name);
    })
 })
 
