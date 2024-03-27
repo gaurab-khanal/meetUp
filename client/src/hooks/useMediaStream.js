@@ -10,7 +10,7 @@ const useMediaStream = ()=>{
         isStreamSet.current = true;
         (async ()=>{
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
+            const stream = await navigator.mediaDevices.getUserMedia({video: true, audio: true});
             console.log("Setting your stream: ", stream)
             setState(stream);
             } catch (error) {
