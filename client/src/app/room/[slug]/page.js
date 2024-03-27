@@ -8,6 +8,7 @@ import Player from "../../../../components/Player";
 import usePlayer from "@/hooks/usePlayer";
 
 
+
 const page = ({ params }) => {
   const socket = useSocket();
   const {peer, id} = usePeer();
@@ -72,19 +73,18 @@ const page = ({ params }) => {
 
 
   useEffect(()=>{
-    if(!stream || !id ) return;
-    console.log("Setting my stream: ", id)
+    if(!stream || !id) return;
     setPlayer((prv)=> (
         {
             ...prv,
             [id]: {
-                stream,
+                stream:stream,
                 muted: false,
                 playing: true
             }
         }
     ))
-  })
+  }, [stream, id])
 
 
   return <div className="h-screen w-screen p-10">
@@ -105,9 +105,11 @@ const page = ({ params }) => {
         overflow: "auto",
       }}>
         {Object.keys(player).map((playerId) => {
+            console.log("Player: ", player[playerId])
             const {stream, muted, playing} = player[playerId];
-            return <Player key={playerId} stream={stream}  playing muted />
+            return <Player key={playerId} stream={stream}  playing={playing} muted />
         })}
+     
   
   </div>
   </div>
