@@ -9,7 +9,7 @@ import usePlayer from "@/hooks/usePlayer";
 
 
 
-const page = ({ params }) => {
+const page = () => {
   const socket = useSocket();
   const {peer, id} = usePeer();
   const {stream} = useMediaStream();
@@ -17,7 +17,6 @@ const page = ({ params }) => {
 
   useEffect(()=>{
     const handleUserConnected = (newUser)=>{
-        console.log("user connedted in room ", newUser)
         if(!stream) return;
         const call = peer?.call(newUser, stream);
 

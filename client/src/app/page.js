@@ -7,7 +7,6 @@ export default function Home() {
   
   const router = useRouter();
   const [roomId, setRoomId] = useState("")
-  const [error, setError] = useState("")
 
   const joinRoom = () => {
 
