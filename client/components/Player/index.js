@@ -6,11 +6,11 @@ import ReactPlayer from "react-player";
 const Player = ({  stream, muted, playing }) => {
   return (
  
-     
+
         <ReactPlayer
           url={stream}
-          height={200}
-          width={200}
+          height="100%"
+          width="100%"
           playing={playing}
           muted={muted}
        
