@@ -16,7 +16,7 @@ export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    const connection  = io("http://localhost:4000");
+    const connection  = io("https://meetup-547e.onrender.com");
     setSocket(connection);
   }, []);
 
