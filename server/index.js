@@ -8,7 +8,7 @@ const port = process.env.PORT || 4000;
 const app = express();
 app.use(
   cors({
-    origin: "https://meet-up-tau.vercel.app/",
+    origin: "https://meet-up-tau.vercel.app",
   })
 );
 
@@ -16,7 +16,7 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: "https://meet-up-tau.vercel.app/",
+    origin: "https://meet-up-tau.vercel.app",
     methods: ["GET", "POST"],
   },
 });
