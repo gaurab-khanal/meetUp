@@ -3,6 +3,8 @@ const { createServer } = require("http");
 const { Server } = require("socket.io");
 const cors = require("cors");
 
+const port = process.env.PORT || 4000;
+
 const app = express();
 app.use(
   cors({
@@ -42,4 +44,4 @@ io.on("connection", (socket) => {
   });
 });
 
-httpServer.listen(4000);
+httpServer.listen(port);
