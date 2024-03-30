@@ -8,7 +8,7 @@ import usePlayer from "@/hooks/usePlayer";
 import { useParams } from "next/navigation";
 import Bottom from "../../components/Controls/Bottom";
 import { cloneDeep } from "lodash";
-import Copy from "@/app/components/Copy/index.js";
+import CopyRoomId from "@/app/components/Copy/index.js";
 
 
 const page = () => {
@@ -161,7 +161,7 @@ const page = () => {
        
         </div>
       </div>
-      <Copy roomId={roomId}/>
+      <CopyRoomId roomId={roomId}/>
       <Bottom
           muted={playerHighlighted?.muted}
           playing={playerHighlighted?.playing}
