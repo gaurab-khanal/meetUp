@@ -11,7 +11,7 @@ import { cloneDeep } from "lodash";
 import CopyRoomId from "@/app/components/Copy/index.js";
 
 
-const page = () => {
+const Page = () => {
   const socket = useSocket();
   const { peer, id } = usePeer();
   const roomId = useParams().slug;  
@@ -173,4 +173,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
