@@ -1,18 +1,25 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSocket } from "@/context/socketProvider";
 import usePeer from "@/hooks/usePeer";
 import useMediaStream from "@/hooks/useMediaStream";
-import ReactPlayer from "react-player";
-import Player from "../../../../components/Player";
+import Player from "../../components/Player/index.js";
 import usePlayer from "@/hooks/usePlayer";
+import { useParams } from "next/navigation";
+import Bottom from "../../components/Controls/Bottom";
+import { cloneDeep } from "lodash";
+import Copy from "@/app/components/Copy/index.js";
+
 
 const page = () => {
   const socket = useSocket();
   const { peer, id } = usePeer();
+  const roomId = useParams().slug;  
   const { stream } = useMediaStream();
-  const { player, setPlayer, playerHighlighted, nonHighlitedPlayer } =
-    usePlayer(id);
+  const { player, setPlayer, playerHighlighted, nonHighlitedPlayer, toggleAudio, toggleVideo , leaveRoom} =
+    usePlayer(id, roomId, peer);
+
+    const [users, setUsers] = useState({});
 
   useEffect(() => {
     const handleUserConnected = (newUser) => {
@@ -29,6 +36,12 @@ const page = () => {
             playing: true,
           },
         }));
+
+      setUsers((prv)=>({
+        ...prv,
+        [newUser]: call
+      })
+      )
       });
     };
 
@@ -38,6 +51,45 @@ const page = () => {
       socket?.off("user-connected", handleUserConnected);
     };
   }, [socket, peer, stream]);
+
+  useEffect(()=>{
+    const handleToggleAudio = (userId)=>{
+      console.log("Toggling audio", userId)
+      setPlayer((prv)=>{
+        const copy = cloneDeep(prv);
+        copy[userId].muted = !copy[userId].muted;
+        return {...copy}
+    })
+    }
+
+    const handleToggleVideo = (userId)=>{
+      console.log("Toggling video", userId)
+      setPlayer((prv)=>{
+        const copy = cloneDeep(prv);
+        copy[userId].playing = !copy[userId].playing;
+        return {...copy}
+    })
+    }
+
+    const handleLeaveRoom = (userId)=>{
+      console.log("Leaving room: ", userId)
+      users[userId]?.close();
+      const playerCopy = cloneDeep(player);
+      delete playerCopy[userId];
+      setPlayer(playerCopy);
+    }
+
+    socket?.on("toggle-audio", handleToggleAudio)
+    socket?.on("toggle-video", handleToggleVideo)
+    socket?.on("leave-room", handleLeaveRoom)
+
+    return ()=>{
+      socket?.off("toggle-audio", handleToggleAudio)
+      socket?.off("toggle-video", handleToggleVideo)
+      socket?.off("leave-room", handleLeaveRoom)
+    }
+      
+  }, [socket, toggleAudio, toggleVideo])
 
   useEffect(() => {
     if (!peer || !stream) return;
@@ -57,6 +109,12 @@ const page = () => {
             playing: true,
           },
         }));
+
+        setUsers((prv)=>({
+          ...prv,
+          [callerId]: call
+        })
+        )
       });
     });
   }, [peer, stream, setPlayer]);
@@ -74,7 +132,7 @@ const page = () => {
   }, [stream, id]);
 
   return (
-    <div className="h-screen w-screen p-10 flex  items-center justify-center">
+    <div className="h-full w-full p-10 flex gap-4 flex-col items-center justify-center">
       <div className="border-2 border-black flex justify-between gap-5">
         <div className="relative ">
           {playerHighlighted && (
@@ -82,24 +140,35 @@ const page = () => {
               stream={playerHighlighted.stream}
               playing={playerHighlighted.playing}
               muted={playerHighlighted.muted}
+              anotherUser= {false}
             />
           )}
         {
             Object.keys(nonHighlitedPlayer).length !== 0 &&
-            <div className="absolute h-[100px] bottom-3 border-2 border-black  right-3">
+            <div className="absolute h-[100px] bottom-3 gap-2 flex right-3">
             {Object.keys(nonHighlitedPlayer).map((playerId) => {
               console.log("Player: ", player[playerId]);
               const { stream, muted, playing } = player[playerId];
               return (
-                <Player key={playerId} stream={stream} playing={playing} muted />
+                <div className=" border-2 border-black ">
+
+                <Player key={playerId} stream={stream} playing={playing} muted={muted}  anotherUser= {true}/>
+                </div>
               );
             })}
           </div>
         }
        
         </div>
-        djsh
       </div>
+      <Copy roomId={roomId}/>
+      <Bottom
+          muted={playerHighlighted?.muted}
+          playing={playerHighlighted?.playing}
+          toggleAudio={toggleAudio}
+          toggleVideo={toggleVideo}
+          leaveRoom={leaveRoom}
+        />
     </div>
   );
 };
