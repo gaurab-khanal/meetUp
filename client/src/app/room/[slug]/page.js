@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useSocket } from "@/context/socketProvider";
-import usePeer from "@/hooks/usePeer";
-import useMediaStream from "@/hooks/useMediaStream";
+import usePeer from "@/app/hooks/usePeer.js";
+import useMediaStream from "@/app/hooks/useMediaStream.js";
 import Player from "../../components/Player/index.js";
-import usePlayer from "@/hooks/usePlayer";
+import usePlayer from "@/app/hooks/usePlayer.js";
 import { useParams } from "next/navigation";
 import Bottom from "../../components/Controls/Bottom";
 import { cloneDeep } from "lodash";
