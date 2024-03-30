@@ -23,7 +23,7 @@ const usePeer = ()=>{
                 socket?.emit("join-room",{ roomId, id});
             setId(id);
         });
-    }, [roomId,socket])
+    }, [roomId,socket, myPeer])
 
 
     return {peer, id}

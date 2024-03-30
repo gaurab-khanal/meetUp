@@ -50,7 +50,7 @@ const Page = () => {
     return () => {
       socket?.off("user-connected", handleUserConnected);
     };
-  }, [socket, peer, stream]);
+  }, [socket, peer, stream, setPlayer]);
 
   useEffect(()=>{
     const handleToggleAudio = (userId)=>{
@@ -89,7 +89,7 @@ const Page = () => {
       socket?.off("leave-room", handleLeaveRoom)
     }
       
-  }, [socket, toggleAudio, toggleVideo])
+  }, [socket, toggleAudio, toggleVideo, setPlayer, player, users])
 
   useEffect(() => {
     if (!peer || !stream) return;
@@ -129,7 +129,7 @@ const Page = () => {
         playing: true,
       },
     }));
-  }, [stream, id]);
+  }, [stream, id, setPlayer]);
 
   return (
     <div className="h-full w-full p-10 flex gap-4 flex-col items-center justify-center">
@@ -150,9 +150,9 @@ const Page = () => {
               console.log("Player: ", player[playerId]);
               const { stream, muted, playing } = player[playerId];
               return (
-                <div className=" border-2 border-black ">
+                <div className=" border-2 border-black" key={playerId}>
 
-                <Player key={playerId} stream={stream} playing={playing} muted={muted}  anotherUser= {true}/>
+                <Player stream={stream} playing={playing} muted={muted}  anotherUser= {true}/>
                 </div>
               );
             })}
