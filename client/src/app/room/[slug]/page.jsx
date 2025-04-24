@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSocket } from "@/context/socketProvider";
 import usePeer from "@/app/hooks/usePeer.js";
 import useMediaStream from "@/app/hooks/useMediaStream.js";

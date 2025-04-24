@@ -18,7 +18,7 @@ import { v4 as uuidv4 } from "uuid";
 import Link from "next/link";
 import Loader from "@/components/ui/loader";
 
-export default function RoomPage() {
+export default function RoomPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [roomId, setRoomId] = useState("");
@@ -137,13 +137,14 @@ export default function RoomPage() {
             <CardFooter>
               {activeTab === "create" ? (
                 <Button className="w-full group" onClick={handleCreateRoom}>
-                 {
-                  loading ? <Loader/> :
-                  <>
+                  {loading ? (
+                    <Loader />
+                  ) : (
+                    <>
                       Create & Join Room
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </>
-                 }
+                    </>
+                  )}
                 </Button>
               ) : (
                 <Button
@@ -151,14 +152,7 @@ export default function RoomPage() {
                   onClick={handleJoinRoom}
                   disabled={!roomId.trim()}
                 >
-                  {
-                    loading ?<Loader/> :  
-                    <>
-                      Join Room
-                    </>
-                  }
-                 
-                  
+                  {loading ? <Loader /> : <>Join Room</>}
                 </Button>
               )}
             </CardFooter>
