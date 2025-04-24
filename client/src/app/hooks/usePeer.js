@@ -1,34 +1,39 @@
 import { useSocket } from "@/context/socketProvider";
 import { useParams } from "next/navigation";
-import {Peer} from "peerjs";
+import { Peer } from "peerjs";
 import { useEffect, useRef, useState } from "react";
 
+const usePeer = () => {
+  const socket = useSocket();
+  const roomId = useParams().slug;
+  const [peer, setPeer] = useState(null);
+  const [id, setId] = useState(null);
+  const myPeer = new Peer();
 
-const usePeer = ()=>{
-    const socket = useSocket();
-    const roomId = useParams().slug;
-    const [peer, setPeer]  = useState(null);
-    const [id, setId] = useState(null);
-    const myPeer = new Peer();
+  const isPeerset = useRef(false);
 
+  useEffect(() => {
+    if (isPeerset.current || !roomId || !socket) return;
+    isPeerset.current = true;
+    setPeer(myPeer);
+    myPeer.on("open", (id) => {
+      console.log("Peer connected: ", id);
+      socket?.emit("join-room", { roomId, id });
+      setId(id);
+    });
 
-    const isPeerset = useRef(false)
+    myPeer.on("close", (id) => {
+      console.log("Peer closed:ddd ", id);
+      // socket?.emit("join-room", { roomId, id });
+      // setId(id);
+    });
 
-    useEffect(()=>{
-        if(isPeerset.current || !roomId || !socket)  return;
-        isPeerset.current = true
-        setPeer(myPeer);
-        myPeer.on("open", (id)=>{
-            console.log("Peer connected: ", id)
-                socket?.emit("join-room",{ roomId, id});
-            setId(id);
-        });
-    }, [roomId,socket, myPeer])
+    myPeer.on("connection", () => {
+      console.log("Peer connected");
+    });
+  }, [roomId, socket, myPeer]);
 
-
-    return {peer, id}
-
-}
-
+  return { peer, id };
+};
 
 export default usePeer;

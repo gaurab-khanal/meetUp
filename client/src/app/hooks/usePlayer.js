@@ -1,56 +1,71 @@
-"use client"
+"use client";
 import { useSocket } from "@/context/socketProvider";
 import { cloneDeep } from "lodash";
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const usePlayer = (myId, roomId, peer)=>{
-    const router = useRouter();
-    const socket = useSocket();
-    const [player, setPlayer] = useState({});
-    const playerCopy = cloneDeep(player);
-    const myStream = useRef(null);
-    myStream.current = player[myId]?.stream;
+const usePlayer = (myId, roomId, peer) => {
+  const router = useRouter();
+  const socket = useSocket();
+  const [player, setPlayer] = useState({});
+  const playerCopy = cloneDeep(player);
+  const myStream = useRef(null);
+  myStream.current = player[myId]?.stream;
 
-    const playerHighlighted = playerCopy[myId];
+  const playerHighlighted = playerCopy[myId];
 
-    delete playerCopy[myId];
+  delete playerCopy[myId];
 
-    const nonHighlitedPlayer = playerCopy;
+  const nonHighlitedPlayer = playerCopy;
 
-    const toggleAudio = ()=>{
-        console.log("Toggling audio")
-        setPlayer((prv)=>{
-            const copy = cloneDeep(prv);
-            copy[myId].muted = !copy[myId].muted;
-            return {...copy}
-        })
-
-        socket.emit("toggle-audio", myId, roomId)
-        
+  const stopMediaTracks = () => {
+    console.log("Media tracks stopped.2222");
+    if (myStream.current) {
+      myStream.current.getTracks().forEach((track) => track.stop());
+      console.log("Media tracks stopped.1111");
     }
+  };
 
+  const toggleAudio = () => {
+    console.log("Toggling audio");
+    setPlayer((prv) => {
+      const copy = cloneDeep(prv);
+      copy[myId].muted = !copy[myId].muted;
+      return { ...copy };
+    });
 
-    const toggleVideo = ()=>{
-        console.log("Toggling video")
-        setPlayer((prv)=>{
-            const copy = cloneDeep(prv);
-            copy[myId].playing = !copy[myId].playing;
-            return {...copy}
-        })
+    socket.emit("toggle-audio", myId, roomId);
+  };
 
-        socket.emit("toggle-video", myId, roomId)
-        
-    }
+  const toggleVideo = () => {
+    console.log("Toggling video");
+    setPlayer((prv) => {
+      const copy = cloneDeep(prv);
+      copy[myId].playing = !copy[myId].playing;
+      return { ...copy };
+    });
 
-    const leaveRoom = ()=>{
-        socket.emit("leave-room", myId, roomId)
-        console.log("Leaving room:  ", roomId);
-        peer?.disconnect();
-        router.push("/");
-    }
+    socket.emit("toggle-video", myId, roomId);
+  };
 
-    return {player, setPlayer, playerHighlighted, nonHighlitedPlayer, toggleAudio, toggleVideo, leaveRoom}
-}
+  const leaveRoom = () => {
+    stopMediaTracks();
+    socket.emit("leave-room", myId, roomId);
+    console.log("Leaving room:  ", roomId);
+    peer?.destroy();
 
-export default usePlayer
+    router.push("/");
+  };
+
+  return {
+    player,
+    setPlayer,
+    playerHighlighted,
+    nonHighlitedPlayer,
+    toggleAudio,
+    toggleVideo,
+    leaveRoom,
+  };
+};
+
+export default usePlayer;

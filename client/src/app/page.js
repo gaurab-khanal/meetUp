@@ -7,11 +7,11 @@ import { ModeToggle } from "@/components/toggle"
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
+    <div className="min-h-screen px-3 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-950 dark:to-slate-900">
       <header className="container mx-auto py-6 flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Video className="h-6 w-6 text-blue-600" />
-          <span className="font-bold text-xl">MeetNow</span>
+          <span className="font-bold text-xl">MeetUp</span>
         </div>
         <div className="flex gap-4">
           <Link href="/room">
@@ -181,7 +181,7 @@ export default function LandingPage() {
 
         {/* Features Section */}
         <section className="py-16">
-          <h2 className="text-3xl font-bold text-center mb-16">Why Choose MeetNow?</h2>
+          <h2 className="text-3xl font-bold text-center mb-16">Why Choose MeetUp?</h2>
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
@@ -238,7 +238,7 @@ export default function LandingPage() {
 
       <footer className="bg-slate-100 dark:bg-slate-800 py-8">
         <div className="container mx-auto px-4 text-center text-slate-600 dark:text-slate-300">
-          <p>© {new Date().getFullYear()} MeetNow. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} MeetUp. All rights reserved.</p>
         </div>
       </footer>
     </div>
