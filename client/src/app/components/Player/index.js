@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const Player = ({ stream, muted, playing, anotherUser }) => {
+const Player = ({ stream, muted, playing }) => {
   const videoRef = useRef(null);
 
 
@@ -18,7 +18,7 @@ const Player = ({ stream, muted, playing, anotherUser }) => {
       }
     }
 
-  }, [stream, muted, playing, anotherUser, videoRef.current]);
+  }, [stream, muted, playing, videoRef.current]);
 
 
   return (
@@ -27,7 +27,7 @@ const Player = ({ stream, muted, playing, anotherUser }) => {
       ref={videoRef}
       playsInline
       autoPlay
-      muted={!anotherUser}
+      muted={muted}
       className='md:rounded-[12px]'
       style={{
         // borderRadius: '12px',

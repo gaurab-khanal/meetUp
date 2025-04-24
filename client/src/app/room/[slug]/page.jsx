@@ -247,9 +247,8 @@ const Page = () => {
                     {playerHighlighted?.playing ? (
                       <Player
                         stream={playerHighlighted?.stream}
-                        anotherUser={false}
                         playing={playerHighlighted?.playing}
-                        muted={playerHighlighted?.muted}
+                        muted={true}
                       />
                     ) : (
                       <div className="h-full w-full flex items-center justify-center bg-slate-700">
@@ -312,7 +311,6 @@ const Page = () => {
                         {playing ? (
                           <Player
                             stream={stream}
-                            anotherUser={true}
                             playing={playing}
                             muted={muted}
                           />
