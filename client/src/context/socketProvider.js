@@ -14,10 +14,9 @@ export const useSocket = () => {
 
 export const SocketProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
-  // https://meetup-547e.onrender.com
 
   useEffect(() => {
-    const connection  = io("http://localhost:4000");
+    const connection  = io("https://meetup.gaurabkhanal.tech/");
     setSocket(connection);
   }, []);
 
