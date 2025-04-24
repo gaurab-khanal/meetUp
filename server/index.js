@@ -8,7 +8,11 @@ const port = process.env.PORT || 4000;
 const app = express();
 app.use(
   cors({
-    origin: ["https://meet-up-tau.vercel.app", "http://localhost:3000"],
+    origin: [
+      "https://meet-up-tau.vercel.app",
+      "http://localhost:3000",
+      "https://meetup.gaurabkhanal.tech",
+    ],
   })
 );
 
@@ -16,7 +20,11 @@ const httpServer = createServer(app);
 
 const io = new Server(httpServer, {
   cors: {
-    origin: ["https://meet-up-tau.vercel.app", "http://localhost:3000"],
+    origin: [
+      "https://meet-up-tau.vercel.app",
+      "http://localhost:3000",
+      "https://meetup.gaurabkhanal.tech",
+    ],
     methods: ["GET", "POST"],
   },
 });
