@@ -306,7 +306,7 @@ const Page = () => {
                     >
                       <Card className=" h-[60vh] overflow-hidden bg-slate-800 border-slate-700">
                         <div className="absolute top-4 left-4 bg-black/50 text-white text-sm px-2 py-1 rounded z-10">
-                          Participant {index + 1}
+                          Participant {index + 1} {muted && "(Muted)"}
                         </div>
                         {playing ? (
                           <Player
