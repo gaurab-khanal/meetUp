@@ -13,6 +13,7 @@ import { VideoIcon, Copy } from "lucide-react";
 import Link from "next/link.js";
 import { Button } from "@/components/ui/button.jsx";
 import { Card } from "@/components/ui/card.jsx";
+import { ModeToggle } from "@/components/toggle.jsx";
 
 const Page = () => {
   const socket = useSocket();
@@ -197,12 +198,12 @@ const Page = () => {
           <VideoIcon className="h-6 w-6 text-blue-500" />
           <span className="font-bold text-xl text-white">MeetUp</span>
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center">
           <div className="flex items-center gap-2">
-            <div className="text-sm text-slate-300 hidden sm:block">
+            <div className="text-sm text-slate-300 whitespace-nowrap hidden sm:block">
               Room ID:
             </div>
-            <div className="bg-slate-700 text-white text-sm py-1 px-3 rounded-md font-mono">
+            <div className="bg-slate-700 truncate text-white text-sm py-1 px-3 rounded-md md:w-full w-[20vw] font-mono">
               {roomId}
             </div>
             <Button
@@ -218,6 +219,7 @@ const Page = () => {
               )}
             </Button>
           </div>
+          <ModeToggle />
         </div>
       </header>
 
